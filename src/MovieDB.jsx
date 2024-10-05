@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.min.js';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -13,11 +9,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Card from 'react-bootstrap/Card';
-import YouTube from 'react-youtube';
+import { useNavigate } from 'react-router-dom';
 
-const App = () => {
+const MovieDB = () => {
   let [api, setApi] = useState([]);
   let [search, setSearch] = useState('');
+  let navigate = useNavigate();
   useEffect(() => {
     fetch(
       'https://api.themoviedb.org/3/trending/movie/day?&api_key=9edd9f02605ba5cd665dacc891acabe1&language=en-US'
@@ -116,7 +113,7 @@ const App = () => {
                   <Card.Text>{x.overview}</Card.Text>
                   <Button
                     variant="primary"
-                    onClick={() => navigate('/partmovie', { state: { cards } })}
+                    onClick={() => navigate('/moviepage', { state: {x} })}
                   >
                     Know more
                   </Button>
@@ -130,6 +127,6 @@ const App = () => {
   );
 };
 
-export default App;
+export default MovieDB;
 
 // return type of state is null

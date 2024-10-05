@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 const ParticularMovie = () => {
   let location = useLocation();
-  let specificMovie = location.state.cards;
+  let specificMovie = location.state.x;
+  console.log(specificMovie);
+
+  const [trailer, setTrailer] = useState('');
+  async function getTrailers(id) {
+    fetch(`http://api.themoviedb.org/3/movie/ ${id}/videos?api_key=9edd9f02605ba5cd665dacc891acabe1`)
+    .then(res => res.json())
+    .then(data => {
+      setTrailer(data.results[0].key);
+    })
+  }
 
   return (
-    <div>
+    <div style={{height: "100vh"}}>
       <img
         src={`https://image.tmdb.org/t/p/original/${specificMovie.backdrop_path}`}
         alt=""
@@ -17,7 +28,12 @@ const ParticularMovie = () => {
       <b> {specificMovie.vote_average} </b>
       <br />
       <br />
-      <button>Play Trailer</button>
+      <button onClick={() => getTrailers(specificMovie.id)}>Play Trailer</button>
+      <div>
+        {
+          trailer && <YouTube videoId={trailer} />
+        }
+      </div>
     </div>
   );
 };
